@@ -1,0 +1,60 @@
+.stat-group {
+	margin-left: auto;
+	background-color: #fff;
+	border: 1px solid transparent;
+	overflow: hidden;
+	max-height: 0px;
+	position: relative;
+	@include vendor(transition-property, max-height, border);
+	@include vendor(transition-duration, .3s, 0s); 
+	@include vendor(transition-timing-function, ease-in-out, linear);
+	@include vendor(transition-delay, 0s, .3s);
+
+
+	@include vendor(border-radius, 4px);
+
+	&.active {
+		max-height: 200px;
+		border: 1px solid darken($silver, 10%);
+		@include vendor(transition-delay, 0s, 0s);
+
+	}
+
+	p {
+		@include font-size(12px, false);
+		line-height: 1;
+		margin: 0 auto .5em;
+		text-align: center;
+		color: darken($silver, 10%);
+	}
+}
+
+.stat--distance {
+	text-align: center;
+
+
+	.stat__value {
+		font-size: 2.7em;
+	}
+
+	.stat__title {
+		line-height: 1.75;
+		margin-top: .5em;
+		text-transform: uppercase;
+	}
+}
+
+a.stat__close {
+	position: absolute;
+	top: 6px;
+	right: 7px;
+	color: #fff;
+	font-size: 16px;
+	background: #AA1E48;
+	width: 20px;
+	text-align: center;
+	height: 20px;
+	vertical-align: middle;
+	display: inline-block;
+	border-radius: 4px;
+}

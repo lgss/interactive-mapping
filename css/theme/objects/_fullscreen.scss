@@ -1,0 +1,22 @@
+.fullscreen {
+	background: #ffffff;
+
+	#wrapper {
+		background: transparent;
+		max-width: none;
+		width: 100%;
+
+		position: absolute;
+		z-index: 9999;
+
+		@include vendor(box-shadow, none);
+
+		.inner-wrapper {
+			margin: 0 auto;
+			max-width: 920px;
+			*width: 920px;
+
+			position: relative;
+		}
+	}
+}

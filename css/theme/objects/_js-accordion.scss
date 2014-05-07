@@ -1,0 +1,19 @@
+.js-accordion {
+	
+	> .js-accordion-content {
+		max-height: 0;
+		overflow: hidden;
+		overflow-y: auto;
+		@include vendor(transition-property, max-height);
+		@include vendor(transition-duration, .3s); 
+		@include vendor(transition-timing-function, ease-in-out);
+		@include vendor(transition-delay, 0s);
+	}
+
+	&.active {
+		> .js-accordion-content {
+			max-height: 420px;
+		}
+	}
+
+}

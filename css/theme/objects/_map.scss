@@ -1,0 +1,36 @@
+#map-wrapper {
+height: 100%;
+width: 100%;
+}
+
+.map {
+
+	height: 100%;
+	width: 100%;
+
+
+	/* 1: stop tiles from using max-width: 100% which causes them to be hidden */
+	img {
+		max-width: none; /*[1]*/
+	}
+
+	.OpenSpaceControlLargeMapControl {
+		/**
+		 * 1. Force top attribute
+		 */
+		top: 135px !important; /*[1]*/
+
+		@include media-query(lap) {
+			top: 160px !important;
+		}
+
+		@include media-query(palm) {
+			display: none;
+		}
+	}
+
+	.OpenSpaceControlSmallMapControl {
+		@extend .OpenSpaceControlLargeMapControl;
+	}
+
+}

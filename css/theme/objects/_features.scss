@@ -1,0 +1,24 @@
+.features {
+    margin: 0;
+}
+
+.feature {
+    > ul {
+        margin: 0;
+    }
+}
+
+table.features--table {
+    margin: 0 auto;
+
+    td {
+    	padding: .25em .5em;
+    }
+    + table {
+        margin-top: 1em;
+    }
+    .feature__header {
+        background: lighten($ltsilver, 10%);
+        text-align: right;
+    }
+}

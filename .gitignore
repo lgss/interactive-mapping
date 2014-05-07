@@ -50,8 +50,5 @@ index.html
 js/app.js
 js/build/*
 
-# ignore inuit base files
-css/inuit.css/*
-
 # ignore compiled css
 css/*.css

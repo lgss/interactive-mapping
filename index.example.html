@@ -1,0 +1,183 @@
+<!doctype html>
+ <html lang="en">
+ 	<head>
+ 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		
+		<title>Interactive Mapping</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+		<link rel="Shortcut Icon" type="image/x-icon" href="images/favicon.ico">
+		<link rel="apple-touch-icon" href="/site/apple-touch-icon.png">
+		<link rel="ToC" href="http://www.northampton.gov.uk/site_map">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- general metadata -->
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="robots" content="index,follow">
+		<meta name="revisit-after" content="2 days">
+		<meta name="Author" content="Northampton Borough Council">
+		<meta name="Publisher-Email" content="dblundell@northampton.gov.uk">
+		<meta name="Coverage" content="House, street, village, hamlet, town, county, country, worldwide">
+		<meta http-equiv="content-language" content="en">
+
+		<!-- Dublin Core Metadata -->
+		<meta name="DC.creator" lang="en" content="Northampton Borough Council">
+		<meta name="DC.date.created" lang="en" scheme="DCTERMS.W3CDTF" content="2014-05-01">
+		<meta name="DC.format" lang="en" scheme="DCTERMS.IMT" content="text/html">
+		<meta name="DC.language" scheme="DCTERMS.ISO639-1" content="en">
+		<meta name="DC.publisher" lang="en" content="Northampton Borough Council">
+		<meta name="DC.rights.copyright" lang="en" content="Northampton Borough Council">
+		<meta name="DC.coverage" lang="en" content="House, street, village, hamlet, town, county, country, worldwide">
+		<meta name="DC.identifier" scheme="DCTERMS.URI" content="http://www.northampton.gov.uk/">
+
+		<!-- eGMS Metadata -->
+		<meta name="eGMS.status" lang="en" content="V1.0 Public Consumption">
+		<meta name="eGMS.accessibility" scheme="WCAG" content="Double-A">
+		<meta name="Keywords" content="NBC, town, management">
+		<meta name="Description" content="Northampton Borough Council Interactive Mapping.">
+		<meta name="DC.title" lang="en" content="Northampton Borough Council - Tel: 0300 330 7000">
+		<meta name="DC.description" lang="en" content="Northampton Borough Council Interactive Mapping.">
+	</head>
+		
+<!-- ########## MAIN STRUCTURE ######### -->
+<!--[if lt IE 7]><body class="ie6 threeCol fullscreen"><![endif]-->
+<!--[if IE 7]><body class="ie7 threeCol fullscreen"><![endif]-->
+<!--[if IE 8]><body class="ie8 threeCol fullscreen"><![endif]-->
+<!--[if IE 9]><body class="ie9 threeCol fullscreen"><![endif]-->
+<!--[if !IE]>--><body class="fullscreen"><!--<![endif]-->
+	<div id="wrapper">
+	<div class="inner-wrapper">
+		<div id="mobile_name">Northampton Borough Council</div>
+		<div id="mast" class="red box-shadow">
+			<span class="h1">
+				<a href="http://www.northampton.gov.uk"><span>Northampton Borough Council</span></a>
+			</span>
+			<ul id="mast-nav">
+				<li class="font-size"><a href="http://www.northampton.gov.uk/accessibility/settings"><span>Accessibility</span></a></li>
+				<li><a href="http://www.northampton.gov.uk/languages">Other languages</a></li>
+				<li><a href="http://www.northampton.gov.uk/disclaimer">Disclaimer</a></li>
+				<li class="last"><a href="http://www.northampton.gov.uk/contact">Contact us</a></li>
+			</ul>
+			<ul id="skip" class="hidden">
+				<li><a href="http://www.northampton.gov.uk/#content" rel="nofollow">Skip to content</a></li>
+				<li><a href="http://www.northampton.gov.uk/#column_nav" rel="nofollow">Skip to main navigation</a></li>
+			</ul>
+	
+			<form action="http://www.northampton.gov.uk/improve_search" method="get" id="search">
+				<p><label for="search-site-query">Search for it...</label></p>
+				<div id="search-site">
+					<input id="search-site-query" type="text" size="18" maxlength="255" name="sw" class="field" value="">
+					<input id="search-site-submit" type="submit" class="button" value=" ">
+				</div>
+			</form>
+	
+			<div class="clear"></div>
+		</div>
+
+		<div class="app__sidebar box-shadow">
+			<div id="sidebar" class="app__sidebar__content js-sidebar">
+				<div class="controls__search" id="addressSearch">
+				</div>
+				<div class="layers__options js-accordion"> 
+					<h3 class="js-accordion-title layers__options__title">Information Layers<span class="ui-icon"></span></h3>
+					<div id="layers-control" class="controls__layers js-accordion-content">
+						<div class="layers-control"></div>
+					</div><!-- /.controls__layers -->
+				</div>
+				<div class="layers__options js-accordion"> 
+					<h3 class="js-accordion-title layers__options__title">Tools<span class="ui-icon"></span></h3>
+					<div class="controls__tools js-accordion-content">
+						<div id="tools" class="layers-tools"></div>
+						<div id="distance" class="stat-group"></div>
+					</div><!-- /.controls__tools -->
+				</div>
+			</div>
+		</div><!-- /.app__sidebar -->
+	</div><!-- /inner-wrapper -->
+</div><!-- /wrapper --> 
+
+
+<div class="app">
+	<div class="app__main">
+		
+		<div class="fetching">
+			<p class="fetching__message">We're just loading the map for you, hold on tight</p>
+		</div>
+		<div id="map-wrapper"><div id="map" class="map"></div></div>
+	</div>
+	<div class="app__banner">
+		<div class="controls__features">
+			<ul id="features" class="features"></ul>
+			</div><!-- /.controls__features -->
+	</div>
+	<div id="pro" class="text--right"></div>
+</div><!-- /.app -->
+
+
+<!-- templates -->
+    <script id="layerTemplate" type="text/template">
+          <label for="<%= name %>" <% if(!loaded || !enabled) { %> class="disabled"  disabled <% } %>>
+          <% if(legend) { %>
+          	<% for(key in legend) { %>
+          <div class="layer-toggle__key" style="<%= legend[key].css %>"></div>
+          	<% } %>
+          <% } %>
+          <input type="checkbox" id="<%= name %>" name="<%= name %>" class="layer-toggle" <% if(visibility) { %> checked<% } %> <% if(!loaded || !enabled) { %> disabled<% } %>/>
+          <%= title %> <% if(!enabled) {%><span class="">(zoom in to enable this layer)</span><% } %>
+          </label>
+    </script>
+    <script id="mapTemplate" type="text/template">
+          <div id="map" class="map"></div>
+    </script>
+    <script id="progressBarTemplate" type="text/template">
+          <span id="progress-bar"><%= current %> / <%= total %> loaded.</span>
+    </script>
+    <script id="measuringToolTemplate" type="text/template">
+          <h3 class="layers-control__group__title control <% if(active) { %>is-active<% } %>"><%= name %></a>
+    </script>
+    <script id="statTemplate" type="text/template">
+          <dl class="stat--distance">
+            <dt class="stat__title"><%= title %></dt>
+            <dd class="stat__value"><%= value %><%= unit %><% if(sup) {%><sup><%= sup %></sup><% } %></dd>
+          </dl>
+          <p>Double click to finish</p>
+          <a href="#close" class="js-close stat__close">x</a>
+    </script>
+    <script id="featureTemplate" type="text/template">
+          <table class="features--table">
+          	<tbody>
+          	<%for (prop in feature.model.attributes) { %>
+              <tr>
+              	<td class="feature__header"><%= prop %></td>
+              	<td class="feature__value"><%= feature.model.attributes[prop] %></td>
+              </tr>
+            <% } %>
+            </tbody>
+          </table>
+    </script>
+    <script id="layerGroupTemplate" type="text/template">
+          <h3 class="layers-control__group__title js-accordion-title"><%= title %></h3>
+          <div class="js-accordion-content"></div>
+    </script>
+    <script id="addressSearchTemplate" type="text/template">
+    	<form id="" class="address-search">
+          <label class="h3 visuallyhidden">Address Search</label>
+          <input type="text" name="address" placeholder="Search an Address or Post Code" value="<%= value %>" autocomplete="off" class="js__address-search-input">
+          <input type="submit" value="Search">
+          </form>
+          <ul id="addressResults" class="address-results">
+          </ul>
+    </script>
+    <script id="addressSearchItemTemplate" type="text/template">
+    	<a href="#"><%= name %><%= number_and_street %> <%= postcode %></a>
+    </script>
+    <script id="layerClearTemplate" type="text/template">
+    	<a href="#clear" class="js-clear layers-control__clear">Clear Layers</a>
+    </script>
+
+    
+    <!-- /templates -->
+    <script src="http://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=YOUR_API_KEY"></script>
+    <script src="js/build/app.min.js"></script>
+
+</body></html>
