@@ -44,3 +44,14 @@ This application is designed to server the overlay layers using the free and ope
 6. Rename app.example.js to app.js
 7. Back in the command line, run 'grunt' to compile the JavaScript and SASS
 8. Grunt will continue to watch for changes, as you save files it will recompile
+
+### Deploying
+
+1. For the front end application you'll need to deploy
+	- index.html
+	- css/style.css
+	- img/*
+	- js/build/app.min.js
+	- theme/*
+	- plus any other files you've added
+2. Also note, your app.js file will need to be compiled with the correct urls for your live environment if they're different from your development environment.
