@@ -42,6 +42,7 @@ tmp
 *.sass-cache
 
 ### Project Ignores
+favicon.ico
 
 # index.html
 index.html

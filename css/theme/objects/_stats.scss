@@ -36,6 +36,9 @@
 	.stat__value {
 		font-size: 2.6em;
 		line-height: 1.25;
+		@media only screen and (min-width:$lap-start) and (max-width:940px) {
+			font-size: 2em;
+		}
 	}
 
 	.stat__title {

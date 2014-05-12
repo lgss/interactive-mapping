@@ -133,9 +133,6 @@ app.View.MapView = Backbone.View.extend({
         
         if(html) {
             this.showMarker(point, html);    
-        } else {
-            
-            this.panMapTo(point.lon, point.lat);
         }
         
         OpenLayers.Event.stop(e);
@@ -216,8 +213,6 @@ app.View.MapView = Backbone.View.extend({
 
             this.featureView = new app.View.FeatureCollectionView(featureRequest);
 
-        } else {
-            this.panMapTo(point.lon, point.lat);
         }
         
         OpenLayers.Event.stop(e);
