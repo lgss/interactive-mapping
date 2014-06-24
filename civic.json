@@ -28,6 +28,18 @@
       {
           "name": "Backbone",
           "@id": "http://backbonejs.org"
+      },
+      {
+          "name": "Geoserver",
+          "@id": "http://geoserver.org"
+      },
+      {
+          "name": "OS OpenSpace",
+          "@id": "http://www.ordnancesurvey.co.uk/innovate/innovate-with-open-space.html"
+      },
+      {
+      	"name": "OpenLayers",
+      	"@id": "http://openlayers.org/"
       }
   ]
 }
