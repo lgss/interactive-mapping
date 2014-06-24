@@ -40,10 +40,10 @@ app.View.AddressSearchView = Backbone.View.extend({
         var searchTerm = this.$el.find(".js__address-search-input").val();
 
         if(searchTerm.length >= 6) {
-            this.model.set("value",searchTerm);   
+            this.model.set("value",searchTerm);
 
             if(this.model.get("value") === this.model.previousAttributes().value) {
-                this.model.trigger("change:value"); 
+                this.model.trigger("change:value");
             }
         }
     },
@@ -82,7 +82,7 @@ app.View.AddressSearchView = Backbone.View.extend({
                     }]);
 
                     setTimeout(function(){
-                        app.Events.Manager.trigger("addressView:addressError",false);
+                        self.trigger("addressView:addressError",false);
                     },2000);
                 }
         });

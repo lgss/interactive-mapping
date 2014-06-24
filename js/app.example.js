@@ -26,4 +26,5 @@ $(function() {
 
     window.nbcMapApp = new app.View.MapView(data);
 
+    Backbone.history.start({pushState: true});
 });

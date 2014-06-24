@@ -2,7 +2,8 @@ var app = app || {
     Model: {},
     View: {},
     Collection: {},
-    Events: {}
+    Events: {},
+    Router: {}
 };
 
 app.Events.Manager = _.extend({}, Backbone.Events);

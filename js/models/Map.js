@@ -8,7 +8,8 @@ app.Model.Map = Backbone.Model.extend({
     defaults: {
         // map defaults
         center: 0,
-        measuringActive: false
+        measuringActive: false,
+        defaultlayer: "",
     },
 
     initialize: function(mapOptions) {

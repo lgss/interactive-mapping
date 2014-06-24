@@ -1,0 +1,17 @@
+/* TEAM */
+
+Your title: Dan Blundell
+Site: dblundell@northamptonshire.gov.uk
+Twitter: @danblundell
+Location: Northampton, UK
+
+/* THANKS */
+
+Name: Michael Dunne
+
+/* SITE */
+
+Last update: 2014/06/09
+Standards: HTML5, CSS3
+Components: jQuery, Backbone, Underscore, OpenLayers.js, Ordnance Survey Open Space, Geoserver
+Software: Sublime Text, Eclipse, Apache Tomcat

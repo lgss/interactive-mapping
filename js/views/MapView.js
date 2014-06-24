@@ -18,8 +18,6 @@ app.View.MapView = Backbone.View.extend({
         this.$mapEl = $(this.mapEl);
         this.geoserver = config.wmsService;
 
-        var zoombar = $("#zoombar");
-
         // set the map options from the config argument
         var mapOptions = {
             restrictedExtent: new OpenLayers.Bounds(config.map.bounds.left,config.map.bounds.bottom,config.map.bounds.right,config.map.bounds.top),
@@ -65,6 +63,8 @@ app.View.MapView = Backbone.View.extend({
         app.Events.Manager.on("featureCollection:show", this.showFeatures, this);
         app.Events.Manager.on("measuring:active", this.setMeasuringToolState, this);
         app.Events.Manager.on("window:resize", this.resizeHandlers, this);
+        app.Events.Manager.on("route:layer", this.setDefaultLayer, this);
+        app.Events.Manager.on("layer:loaded", this.showDefaultLayer, this);
 
 
         // get a reference to the sidebar
@@ -73,28 +73,12 @@ app.View.MapView = Backbone.View.extend({
         $(window).on("resize", this.resize);
     },
 
-    setMeasuringToolState: function(active) {
-        this.model.set("measuringActive", active);
+    setDefaultLayer: function(layerName) {
+        this.model.set("defaultLayer", layerName); 
     },
 
-    /**
-     * Adds the navigation controls for
-     * interacting with the map.
-     * Reference: OpenLayers.js
-     */
-    addControls: function() {
-                this._map.addControl();
-                //this._map.addControl(new OpenLayers.Control());
-                
-                //this._map.addControl(new OpenLayers.Control.PanZoomBar());
-
-                var panel = new OpenLayers.Control.Panel(
-                    {div: document.getElementById("zoombar")}
-                );
-
-                panel.addControl(new OpenLayers.Control.PanZoomBar());
-
-        this._map.addControls([new OpenLayers.Control.Navigation(),panel]);
+    setMeasuringToolState: function(active) {
+        this.model.set("measuringActive", active);
     },
 
     centerMap: function(x, y, zoom) {
@@ -139,9 +123,27 @@ app.View.MapView = Backbone.View.extend({
     },
 
     addLayers: function() {
-        var toAdd = this.getOpenLayers(this.getAllOverlays());
+        
+        var overlays = this.getAllOverlays();
+        var toAdd = this.getOpenLayers(overlays);
+
         this._map.addLayers(toAdd);
+
         this.render();
+    },
+
+    showDefaultLayer: function(layerModel) {
+        var self = this;
+
+        if(this.model.get("defaultLayer")) {
+            if(layerModel.get("name").toLowerCase() === "nbc:" + this.model.get("defaultLayer").toLowerCase()){
+                layerModel.showLayer();
+                // var ol = layerModel.get("openLayer");
+                // var bounds = ol.getDataExtent();
+                // var zoom = ol.getZoomForExtent(bounds);
+                // self._map.zoomTo(zoom);
+            }
+        }
     },
 
 
@@ -225,7 +227,6 @@ app.View.MapView = Backbone.View.extend({
     getAllOverlays: function() {
         // go get the overlays from the group collection view
         var groups = this.model.get("overlays").collection.models; // returns an array of layer groups
-        
         // hold the overlay layers
         var overlays = [];
 
