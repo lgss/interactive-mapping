@@ -8,8 +8,8 @@
           {"category": "GIS"}
   ],
   "owner": {
-      "name": "Lichfield District Council",
-      "type": "Local council",
+      "name": "Northampton Borough Council",
+      "type": "Local authority",
       "@id": "http://gov.uk/councils/northampton-borough-council"
   },
   "deployments": [
