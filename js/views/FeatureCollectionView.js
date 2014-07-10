@@ -8,6 +8,7 @@ app.View.FeatureCollectionView = Backbone.View.extend({
         this.collection = new app.Collection.FeatureCollection();
         this.html = "";
         this.e = request.e;
+        this.request = request;
 
         //request the features from the server
         OpenLayers.Request.GET({
@@ -17,8 +18,6 @@ app.View.FeatureCollectionView = Backbone.View.extend({
             success: this.response,
             failure: this.response
         });
-        //OpenLayers.Event.stop(request.e);
-        //
 
         // listen for reset events and render the collection
         this.collection.on('reset', this.render, this);
@@ -41,15 +40,20 @@ app.View.FeatureCollectionView = Backbone.View.extend({
     },
 
     response: function(data) {
-
+				var self = this;
         // parse only the feature properties - the interesting bits
         var features = _.map($.parseJSON(data.responseText).features, function(feature) {
-            return feature.properties;
+						var name = self.getLayerNameFromFeatureId(feature.id);
+            return {id: name, properties: feature.properties};
         });
-
 
         // reset the collection
         this.collection.reset(features);
-    }
+    },
+
+		getLayerNameFromFeatureId: function(id) {
+			var idArr = id.split('.');
+			return idArr[0].replace(/([a-z])([A-Z])/g, '$1 $2');
+		}
 
 });

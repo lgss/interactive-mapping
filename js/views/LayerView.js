@@ -13,8 +13,8 @@ app.View.LayerView = Backbone.View.extend({
         var layer = this.model.get("openLayer");
 
         // bind OpenLayers events to the Layer
-        layer.events.register("loadstart", this, this.layerLoading);
-        layer.events.register("loadend", this, this.layerLoaded);
+        //layer.events.register("loadstart", this, this.layerLoading);
+        //layer.events.register("loadend", this, this.layerLoaded);
 
         this.on("change:visibility", this, this.render);
         this.listenTo(this.model, "change:legend", this.render);
@@ -51,6 +51,7 @@ app.View.LayerView = Backbone.View.extend({
     },
 
     layerLoaded: function(e) {
+				this.model.hideLayer();
         this.model.set("loaded", true);
         this.model.trigger('layer:loaded');
         app.Events.Manager.trigger("layer:loaded", this.model);

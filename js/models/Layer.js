@@ -9,8 +9,8 @@ app.Model.Layer = Backbone.Model.extend({
         type: "WMS",
         showControl: true,
         visibility: false,
-        loaded: false,
-        enabled: false,
+        loaded: true,
+        enabled: true,
         legend: false
     },
 
@@ -19,10 +19,11 @@ app.Model.Layer = Backbone.Model.extend({
         var self = this;
         var ol = {
             title: layer.name,
-            options: {}, 
+            options: {},
             params: {}
         };
         var lay;
+
         // set the layers default option
         ol.options.visibility = this.defaults.visibility;
 
@@ -33,31 +34,41 @@ app.Model.Layer = Backbone.Model.extend({
             ol.type = layer.type;
 
             ol.params.layers = layer.name;
-            ol.params.styles = "";
+            //ol.params.styles = "";
             ol.params.tiled = true;
             ol.params.exceptions = "application/json";
             ol.params.strategies = [new OpenLayers.Strategy.Fixed({preload: true})];
-            //ol.params.tileSize = new OpenLayers.Size(200,200);
-            ol.params.resolutions = [200,100,50,10,5,2.5,1.25,0.5,0.25];
+            ol.params.format = 'image/png';
+            ol.params.transparent = true;
+
 
             ol.options = {
                         buffer: 0,
                         displayOutsideMaxExtent: true,
-                        isBaseLayer: true,
+                        isBaseLayer: false,
+                        visibility: this.defaults.visibility,
                         yx: {
                             "EPSG:27700": true
-                        }
+                        },
+                        protocol: new OpenLayers.Protocol.WFS({
+                            "featureType": layerTitle,
+                            "url": ol.service,
+                            "geometryName": "the_geom",
+                            "featurePrefix": "WebMapping",
+                            "srsName": "EPSG:27700",
+                            "version": "1.1.0"
+                        })
                     };
-
 
             lay = new OpenLayers.Layer[ol.type](
                 ol.title,
-                wmsUrl,
+                layer.service + "wms",
                 ol.params,
                 ol.options
             );
 
             this.set("openLayer", lay);
+            //self.setLegend();
         } else {
             ol.service = layer.service + "wfs";
             ol.type = "Vector";
@@ -103,20 +114,35 @@ app.Model.Layer = Backbone.Model.extend({
 
             this.set("openLayer", lay);
 
-            var sldUrl = layer.service + "styles/"+layerTitle+".sld";
+
+        }
+        this.getSLD(layer.service, layer.title);
+    },
+
+    getSLD: function(webservice, layerTitle) {
+			var self = this;
+			var sldUrl = webservice + "styles/"+self.trim(layerTitle)+".sld";
 
             OpenLayers.Request.GET({
                 url: sldUrl,
                 success: function(req) {
                     var format = new OpenLayers.Format.SLD();
                     self.sld = format.read(req.responseText || req.responseXML);
-                    var style = self.sld.namedLayers[layer.title].userStyles[0];
-                    self.get("openLayer").styleMap.styles["default"] = style;
-                    self.setLegend();
+                    self.setSLD(layerTitle);
                 }
             });
-        }
     },
+
+    setSLD: function(layerTitle) {
+
+			if(this.get("type") !== "WMS") {
+				var style = this.sld.namedLayers[layerTitle].userStyles[0];
+				this.get("openLayer").styleMap.styles["default"] = style;
+			}
+
+			this.setLegend();
+    },
+
     showLayer: function() {
         this.set("visibility", true);
         this.get("openLayer").setVisibility(true);
@@ -138,11 +164,11 @@ app.Model.Layer = Backbone.Model.extend({
     colorLuminance: function(hex, opacity) {
 
         hex = String(hex).replace(/[^0-9a-f]/gi, '');
-        
+
         if (hex.length < 6) {
             hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
         }
-        
+
         opacity = opacity || 1;
 
         var rgba = "rgba(", c, i;
@@ -158,12 +184,12 @@ app.Model.Layer = Backbone.Model.extend({
 
     setLegend: function() {
         var self = this,
-            layerStyle = this.get("openLayer").styleMap.styles["default"],
+            layerStyle = this.sld.namedLayers[this.get("title")].userStyles[0],
             rules = layerStyle.rules,
             legend = [];
 
         _.each(rules,function(rule) {
-            
+
             var legendItem = {
                 name: rule.filter ? rule.filter.value : "default",
                 properties: []
@@ -196,7 +222,7 @@ app.Model.Layer = Backbone.Model.extend({
                         case "strokeDashstyle":
                             legendItem.properties.push("border-style: dashed;");
                         break;
-                    }  
+                    }
 
                 }
 

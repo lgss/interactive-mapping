@@ -43,7 +43,7 @@ app.View.MapView = Backbone.View.extend({
 
         // correct pan zoom alignment as you can't move it to another container
         this.alignPanZoom();
-        
+
         // go and get base layers from Geoserver
         //this.getLayersFromService(this.geoserver, this.geoserver, this.getBaseLayersFromService, this);
 
@@ -53,7 +53,7 @@ app.View.MapView = Backbone.View.extend({
         // create some measuring controls and attach them to the map
         this.model.set("measuringControls", new app.View.MeasuringToolCollectionView(this._map));
         this.model.set("addressSearch", new app.View.AddressSearchView());
-        
+
         // event listener for this._map clicks
         this._map.events.register("click", this, this.handleClick);
         this._map.events.register("touchend", this, this.handleClick);
@@ -74,7 +74,7 @@ app.View.MapView = Backbone.View.extend({
     },
 
     setDefaultLayer: function(layerName) {
-        this.model.set("defaultLayer", layerName); 
+        this.model.set("defaultLayer", layerName);
     },
 
     setMeasuringToolState: function(active) {
@@ -98,7 +98,7 @@ app.View.MapView = Backbone.View.extend({
 
     showAddress: function(model) {
         var point = new OpenSpace.MapPoint(model.get("easting"), model.get("northing"));
-        
+
         this.centerMap(model.get("easting"),model.get("northing"), 5);
         this.hideAccordions();
         this.showMarker(point);
@@ -106,24 +106,24 @@ app.View.MapView = Backbone.View.extend({
 
     showFeatures: function(e, html) {
         var latLon;
-        
+
         if(e.xy) {
             latLon = this._map.getLonLatFromPixel(e.xy);
         } else {
             latLon = this._map.getLonLatFromPixel({x: e.x, y: e.y});
         }
-        
+
         var point = new OpenSpace.MapPoint(latLon.lon, latLon.lat);
-        
+
         if(html) {
-            this.showMarker(point, html);    
+            this.showMarker(point, html);
         }
-        
+
         OpenLayers.Event.stop(e);
     },
 
     addLayers: function() {
-        
+
         var overlays = this.getAllOverlays();
         var toAdd = this.getOpenLayers(overlays);
 
@@ -166,7 +166,7 @@ app.View.MapView = Backbone.View.extend({
 
     /**
      * Creates an app.View.FeatureCollectionView
-     * 
+     *
      * @param  {ClickEvent} e
      * @return {Void}
      */
@@ -216,7 +216,7 @@ app.View.MapView = Backbone.View.extend({
             this.featureView = new app.View.FeatureCollectionView(featureRequest);
 
         }
-        
+
         OpenLayers.Event.stop(e);
     },
 
@@ -251,9 +251,9 @@ app.View.MapView = Backbone.View.extend({
     },
 
     /**
-     * Gets an array containing the name 
+     * Gets an array containing the name
      * attribute for each of the OpenLayers
-     * 
+     *
      * @param  Array[app.Model.Layer] layers
      * @return Array[String]
      */
@@ -278,6 +278,13 @@ app.View.MapView = Backbone.View.extend({
             return layer.prefix === "NBC";
         });
 
+        _.each(overlays,function(layer){
+						if(layer.abstract) {
+							var config = $.parseJSON(layer.abstract);
+							layer.type = config.type;
+						}
+        });
+
         // get a unique list of possible layer categories
         var categories = _.uniq(_.map(overlays, function(layer){
             return layer.keywords[0].value;
@@ -285,7 +292,7 @@ app.View.MapView = Backbone.View.extend({
 
         // create a layer group per category and add the layers to the group
         _.each(categories, function(cat){
-            
+
             var layerGroup = {
                 title: cat,
                 layers: []
@@ -326,9 +333,9 @@ app.View.MapView = Backbone.View.extend({
         _.each(baseGroup, function(layer){
             var layerModel = new app.Model.Layer(layer);
             baseLayers.push(layerModel.get("openLayer"));
-            
+
         });
-            
+
         context._map.addLayers(baseLayers);
         context.render();
         context.centerMap('475579', '260488', 4);
@@ -337,28 +344,28 @@ app.View.MapView = Backbone.View.extend({
     /**
      * Gets all the available layers using the WMS web service
      * within Geoserver.
-     * 
+     *
      * @param  {String}   serviceUrl [the base url to the wms service]
      * @param  {Function} callback   [the method to call once ajax has completed]
      * @return {Array}               [an array of layers from the WMS service]
      */
     getLayersFromService: function(serviceUrl, serviceUrlCache, callback, context) {
-        
+
         OpenLayers.Request.GET({
-            url: serviceUrl + 'wms?request=getCapabilities', 
+            url: serviceUrl + 'wms?request=getCapabilities',
             success: function(req) {
                 if(req.status === 200) {
 
                     var format=new OpenLayers.Format.WMSCapabilities(),
                     doc = format.read(req.responseXML);
-                    callback(doc.capability.layers, serviceUrlCache, context);   
+                    callback(doc.capability.layers, serviceUrlCache, context);
 
-                    
+
                 } else {
                     context.$el.find('.fetching').addClass("fail")
                         .find(".fetching__message").html("Looks like there something's broken, get notified when we're back up and running");
                 }
-                
+
             },
             failure: function(fail) {
             }
@@ -381,10 +388,10 @@ app.View.MapView = Backbone.View.extend({
         e.preventDefault();
         if(!this.$el.find(e.target).parent().hasClass("active")) {
             this.$el.find(e.target).parent().siblings().removeClass("active");
-            this.$el.find(e.target).parent().addClass("active");    
+            this.$el.find(e.target).parent().addClass("active");
         } else {
             this.$el.find(e.target).parent().removeClass("active");
-        } 
+        }
 
         app.Events.Manager.trigger("accordions:closed");
     },
@@ -403,7 +410,7 @@ app.View.MapView = Backbone.View.extend({
         } else {
             this._map.createMarker(mapPoint, this.model.get("icon"));
         }
-        
+
     },
 
     clearMarkers: function() {

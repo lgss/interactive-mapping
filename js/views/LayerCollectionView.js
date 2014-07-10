@@ -28,6 +28,7 @@ app.View.LayerCollectionView = Backbone.View.extend({
         }
 
         this.$el.html("");
+
         this.collection.each(function(layer) {
 
             if (!layer.get("openLayer").isBaseLayer) {
@@ -52,11 +53,15 @@ app.View.LayerCollectionView = Backbone.View.extend({
 
     toggleLayers: function() {
         this.collection.each(function(layer) {
+						console.log(layer);
+
             // clear the layer visibility of all non-Base-layers
             if (!layer.get("openLayer").isBaseLayer && layer.get("openLayer").calculateInRange()) {
                 layer.enableLayer();
+                console.log("ENABLED");
             } else if (!layer.get("openLayer").isBaseLayer && !layer.get("openLayer").calculateInRange()) {
                 layer.disableLayer();
+                console.log("DISABLED");
             }
 
         }, this);

@@ -26,7 +26,7 @@ app.View.LayerGroupCollectionView = Backbone.View.extend({
         this.activeLayers = [];
 
         app.Events.Manager.on("layer:active", this.handleLayer, this);
-        
+
         this.render();
     },
 
@@ -65,6 +65,9 @@ app.View.LayerGroupCollectionView = Backbone.View.extend({
     updateProgress: function() {
         // count the number of loaded layers
         var loaded = _.filter(this.getLayers(), function(layer){
+						console.log(layer.get("name"));
+						console.log(layer);
+						console.log(layer.get("loaded"));
             return layer.get("loaded");
         });
     },
@@ -83,7 +86,7 @@ app.View.LayerGroupCollectionView = Backbone.View.extend({
 
     toggleClearButton: function() {
         var $clearBtn = this.$el.find(".js-clear");
-        
+
         if(this.activeLayers.length > 0) {
             if(!$clearBtn.hasClass("is-active")) {
                 $clearBtn.addClass("is-active");
