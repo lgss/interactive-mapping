@@ -30,20 +30,19 @@ table.features--table {
 }
 
 .feature__images__wrapper {
-	background: $silver;
-
+	background: white;
 	position: absolute;
 	bottom: $base-spacing-unit*-5;
 	height: $base-spacing-unit*5;
 	width: 100%;
 	overflow: hidden;
-	padding: $half-spacing-unit/2;
 
 	z-index: 9999;
-	@include vendor(transition, bottom .2s);
+	@include vendor(transition, .2s);
 
 	&.active {
 		bottom: 0;
+		@include vendor(box-shadow, 0px $half-spacing-unit*-0.5 $half-spacing-unit/2 $ltsilver);
 	}
 }
 
@@ -56,16 +55,16 @@ table.features--table {
 .feature__images__scroller {
 	overflow-x: auto;
 	overflow-y: hidden;
-	position: absolute;
-	left: $half-spacing-unit/2;
 	height: 100px;
 }
 .feature__images {
 	display: inline-block;
+	width: 1584px;
 }
 .feature__image {
 	display: inline-block;
 	margin-right: 3px;
+	width: 132px;
 	a {
 		display: block;
 		width: 100%;

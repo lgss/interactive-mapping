@@ -17,6 +17,7 @@ app.View.MapView = Backbone.View.extend({
         this.mapEl = mapEl || this.mapEl;
         this.$mapEl = $(this.mapEl);
         this.geoserver = config.wmsService;
+        this.photosDir = config.photosDir;
 
         // set the map options from the config argument
         var mapOptions = {
@@ -279,9 +280,28 @@ app.View.MapView = Backbone.View.extend({
         });
 
         _.each(overlays,function(layer){
+console.log(layer);
 						if(layer.abstract) {
+
+							// parse the config object
 							var config = $.parseJSON(layer.abstract);
-							layer.type = config.type;
+console.log(config);
+							// set an explicit layer type
+							if(config.type === "WMS") {
+								layer.type = "WMS";
+							}
+
+							// add extensions to the layer obj
+							layer.extensions = {};
+
+							if(config.photos) {
+
+								layer.extensions.photos = {
+									fileType: config.photos.fileType,
+									property: config.photos.property
+								};
+							}
+
 						}
         });
 

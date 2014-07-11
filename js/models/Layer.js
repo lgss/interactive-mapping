@@ -6,7 +6,7 @@ var app = app || {
 
 app.Model.Layer = Backbone.Model.extend({
     defaults: {
-        type: "WMS",
+        type: "",
         showControl: true,
         visibility: false,
         loaded: true,
@@ -15,7 +15,7 @@ app.Model.Layer = Backbone.Model.extend({
     },
 
     initialize: function(layer) {
-
+console.log(layer.type);
         var self = this;
         var ol = {
             title: layer.name,
@@ -134,8 +134,10 @@ app.Model.Layer = Backbone.Model.extend({
     },
 
     setSLD: function(layerTitle) {
-
+	console.log(layerTitle);
+	console.log("Type: " + this.get("type"));
 			if(this.get("type") !== "WMS") {
+				console.log("settingSLD");
 				var style = this.sld.namedLayers[layerTitle].userStyles[0];
 				this.get("openLayer").styleMap.styles["default"] = style;
 			}
