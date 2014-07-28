@@ -18,6 +18,7 @@ app.View.MapView = Backbone.View.extend({
         this.$mapEl = $(this.mapEl);
         this.geoserver = config.wmsService;
         this.photosDir = config.photosDir;
+        this.workspace = config.workspace;
 
         // set the map options from the config argument
         var mapOptions = {
@@ -142,7 +143,7 @@ app.View.MapView = Backbone.View.extend({
         var self = this;
 
         if(this.model.get("defaultLayer")) {
-            if(layerModel.get("name").toLowerCase() === "nbc:" + this.model.get("defaultLayer").toLowerCase()){
+            if(layerModel.get("name").toLowerCase() === self.workspace.toLowerCase() + ":" + this.model.get("defaultLayer").toLowerCase()){
                 layerModel.showLayer();
                 // var ol = layerModel.get("openLayer");
                 // var bounds = ol.getDataExtent();
@@ -205,7 +206,8 @@ app.View.MapView = Backbone.View.extend({
                     format: "image/png",
                     srs: this._map.getProjection()
                 },
-                geoserver: this.geoserver
+                geoserver: this.geoserver,
+                workspace: this.workspace
             };
 
             // handle the wms 1.3 vs wms 1.1 madness
@@ -276,12 +278,13 @@ app.View.MapView = Backbone.View.extend({
      * @return {void}
      */
     getOverlaysFromService: function(layers, serviceUrl, context) {
-        var overlayGroups = [];
+        var overlayGroups = [],
+						self = this;
 
         // filter get only the layers that are overlays
         var overlays = _.filter(layers, function(layer){
             layer.isBaseLayer = false;
-            return layer.prefix === "NBC";
+            return layer.prefix.toLowerCase() === context.workspace.toLowerCase();
         });
 
 				_.each(overlays,function(layer){
