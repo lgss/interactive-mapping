@@ -65,6 +65,7 @@ app.View.MapView = Backbone.View.extend({
         app.Events.Manager.on("measuring:active", this.setMeasuringToolState, this);
         app.Events.Manager.on("window:resize", this.resizeHandlers, this);
         app.Events.Manager.on("route:layer", this.setDefaultLayer, this);
+        app.Events.Manager.on("route:category", this.setDefaultCategory, this);
         app.Events.Manager.on("layer:loaded", this.showDefaultLayer, this);
 
 
@@ -76,6 +77,10 @@ app.View.MapView = Backbone.View.extend({
 
     setDefaultLayer: function(layerName) {
         this.model.set("defaultLayer", layerName);
+    },
+
+    setDefaultCategory: function(categoryName) {
+        console.log("category selected");
     },
 
     setMeasuringToolState: function(active) {
@@ -279,13 +284,13 @@ app.View.MapView = Backbone.View.extend({
             return layer.prefix === "NBC";
         });
 
-        _.each(overlays,function(layer){
-console.log(layer);
+				_.each(overlays,function(layer){
+
 						if(layer.abstract) {
 
 							// parse the config object
 							var config = $.parseJSON(layer.abstract);
-console.log(config);
+
 							// set an explicit layer type
 							if(config.type === "WMS") {
 								layer.type = "WMS";
