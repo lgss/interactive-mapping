@@ -19,7 +19,7 @@ app.Model.Map = Backbone.Model.extend({
             allLayers: true
         };
 
-        var osMap = new OpenSpace.Map("map",options);
+        var osMap = new OpenLayers.Map("map",options);
 
         this.set("openLayerMap", osMap);
     }

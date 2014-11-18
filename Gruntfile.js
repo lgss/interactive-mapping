@@ -27,7 +27,11 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'js/build/app.min.js': [
-                        'http://openspace.ordnancesurvey.co.uk/osmapapi/openspace.js?key=F7B5D2F42A970610E0430C6CA40ADDB9',
+                        'js/lib/OpenLayers.js',
+                        'js/lib/vector3d.js',
+                        'js/lib/geo.js',
+                        'js/lib/latlon.js',
+                        'js/lib/osgridref.js',
                         'js/lib/jquery-1.9.1.min.js',
                         'js/lib/underscore-min.js',
                         'js/lib/backbone-min.js',
